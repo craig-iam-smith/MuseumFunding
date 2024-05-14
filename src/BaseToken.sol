@@ -4,6 +4,7 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "forge-std/console.sol";
 
 contract BaseToken is ERC20, AccessControl {
     // Define the roles
@@ -17,7 +18,7 @@ contract BaseToken is ERC20, AccessControl {
     // Define the constructor
     // @dev - grant the DEFAULT_ADMIN_ROLE, ADMIN_ROLE, and MINTER_ROLE to the deployer
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-        grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         grantRole(ADMIN_ROLE, _msgSender());
         grantRole(MINTER_ROLE, _msgSender());
     }
