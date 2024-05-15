@@ -46,4 +46,11 @@ contract CounterTest is Test {
         AssetToken.burn(alice, 1, z);
         assertEq(AssetToken.balanceOf(alice, 1), 0);
     }
+    function test_supportsInterface() public view {
+        assert(AssetToken.supportsInterface(0x01ffc9a7));
+    }
+    function test_fail_supportsInterface() public view {
+        assert(!AssetToken.supportsInterface(0x01ffc9a8));
+    }
+
 }

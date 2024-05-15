@@ -16,7 +16,7 @@ contract rwAsset is ERC1155, AccessControl {
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC1155, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
-}
+    }
     function mint(address account, uint256 id, uint256 amount, bytes memory data) public {
         require(hasRole(MINTER_ROLE, msg.sender), "must have minter role to mint");
         _mint(account, id, amount, data);
