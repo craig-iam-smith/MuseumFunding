@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "forge-std/console.sol";
-
 
 // AssetPool is a contract that holds a pool of NFT assets, and mints ERC20 tokens against them.
 
@@ -30,9 +31,9 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     uint256 public requiredBaseTokenAmount;
 
     // mapping of token contract to id to amount
-    mapping(address => mapping(uint256 => uint256)) public nftBalances;
-    mapping(address => IERC1155) public tokenContract;
-    mapping(address => uint256) public tokenIds;
+    mapping(IERC1155 => mapping(uint256 => uint256)) public nftBalances;
+    mapping(IERC1155 => bool) public tokenContracts;
+    mapping(address => mapping(uint256 => bool)) public tokenIds;
     // @dev - Define the name and symbol state variables
 
     // Define the events
@@ -81,6 +82,23 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         requiredBaseTokenAmount = _requiredBaseTokenAmount;
     }
 
+    function addAssetContract(
+        IERC1155 tokenContractAddress,
+        uint256 tokenId
+    ) public onlyAdmin {
+        require(
+            tokenContractAddress != IERC1155(address(0)),
+            "AssetPool: token contract not supported"
+        );
+        require(
+            tokenIds[address(tokenContractAddress)][tokenId] == false,
+            "AssetPool: token contract already supported"
+        );
+        
+        tokenContracts[tokenContractAddress] = true;
+        tokenIds[address(tokenContractAddress)][tokenId] = true;
+    }
+
     // @dev - todo move this to a library
     // @dev - Define the supportsInterface function
     function supportsInterface(
@@ -110,6 +128,34 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         _;
     }
 
+    function depositAsset(
+        IERC1155 tokenContractAddress,
+        uint256 tokenId,
+        uint256 amount
+    ) public {
+        require(
+            tokenContracts[tokenContractAddress] == true,
+            "AssetPool: token contract not supported"
+        );
+        require(
+            tokenContractAddress != IERC1155(address(0)),
+            "AssetPool: token contract not supported"
+        );
+        require(
+            tokenIds[address(tokenContractAddress)][tokenId] == true,
+            "AssetPool: token id not supported"
+        );
+        nftBalances[tokenContractAddress][tokenId] += amount;
+        assetPoolNFT.safeTransferFrom(
+            msg.sender,
+            address(this),
+            tokenId,
+            amount,
+            ""
+        );
+    }
+
+//
     // Define the functions
 
     function totalSupply() external view override returns (uint256) {}
@@ -174,4 +220,5 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         uint256[] calldata values,
         bytes calldata data
     ) external override {}
+
 }
