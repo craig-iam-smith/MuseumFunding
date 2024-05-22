@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "./IOracle.sol";
 import "forge-std/console.sol";
 
 // AssetPool is a contract that holds a pool of NFT assets, and mints ERC20 tokens against them.
@@ -28,6 +29,7 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     IERC20 public assetPoolToken;
     IERC1155 public assetPoolNFT;
     IERC1155 public receiptNFT;
+    IOracle public oracle;
     uint256 public requiredBaseTokenAmount;
 
     // mapping of token contract to id to amount
@@ -39,6 +41,7 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     // Define the events
     event AdminRoleGranted(address indexed account);
     event MinterRoleGranted(address indexed account);
+    event AssetDeposited(address indexed account, IERC1155 indexed asset, uint256 id, uint256 amount);
 
     // Define the constructor
     // @dev - grant the DEFAULT_ADMIN_ROLE, ADMIN_ROLE, and MINTER_ROLE to the deployer
@@ -81,6 +84,10 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     ) public onlyAdmin {
         requiredBaseTokenAmount = _requiredBaseTokenAmount;
     }
+    // @dev - define receive function to accept ether
+    receive() external payable {}
+    // @dev - define fallback function to accept ether
+    fallback() external payable {}
 
     function addAssetContract(
         IERC1155 tokenContractAddress,
@@ -153,6 +160,9 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
             amount,
             ""
         );
+        // @dev - emit event
+        emit AssetDeposited(msg.sender, assetPoolNFT, tokenId, amount);
+
     }
 
 //
