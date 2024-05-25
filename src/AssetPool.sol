@@ -44,6 +44,10 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     event AssetDeposited(address indexed account, IERC1155 indexed asset, uint256 id, uint256 amount);
 
     // Define the constructor
+    // @param _baseToken - the token of the contract deployer, may require to use contract
+    // @param _assetPoolToken - the token that will be minted against the NFTs
+    // @param _assetPoolNFT - the NFT contract that assets are minted with
+    // @param _receiptNFT - NFT minted to the user when they deposit assets
     // @dev - grant the DEFAULT_ADMIN_ROLE, ADMIN_ROLE, and MINTER_ROLE to the deployer
     constructor(
         IERC20 _baseToken,
@@ -62,23 +66,28 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         grantRole(ADMIN_ROLE, _msgSender());
         grantRole(MINTER_ROLE, _msgSender());
     }
-
+    // function - setBaseToken
+    // @param - IERC20 _baseToken  (the token of the contract deployer, may require holding this token to access contract)
     function setBaseToken(IERC20 _baseToken) public onlyAdmin {
         baseToken = _baseToken;
     }
-
+    // function - setAssetPoolToken
+    // @param - IERC20 _assetPoolToken  (the token that will be minted against the NFTs)
     function setAssetPoolToken(IERC20 _assetPoolToken) public onlyAdmin {
         assetPoolToken = _assetPoolToken;
     }
-
+    // function - setAssetPoolNFT
+    // @param - IERC1155 _assetPoolNFT  (the NFT contract that assets are minted with)
     function setAssetPoolNFT(IERC1155 _assetPoolNFT) public onlyAdmin {
         assetPoolNFT = _assetPoolNFT;
     }
-
+    // function - setReceiptNFT
+    // @param - IERC1155 _receiptNFT  (NFT minted to the user when they deposit assets)
     function setReceiptNFT(IERC1155 _receiptNFT) public onlyAdmin {
         receiptNFT = _receiptNFT;
     }
-
+    // function - setRequiredBaseTokenAmount
+    // @param - uint256 _requiredBaseTokenAmount  (the amount of base token required to access the contract)
     function setRequiredBaseTokenAmount(
         uint256 _requiredBaseTokenAmount
     ) public onlyAdmin {
@@ -89,6 +98,9 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     // @dev - define fallback function to accept ether
     fallback() external payable {}
 
+    // function - addAssetContract
+    // @param - IERC1155 tokenContractAddress  (the address of the NFT contract to add to allowlist)
+    // @param - uint256 tokenId  (the id of the NFT to add to allowlist)
     function addAssetContract(
         IERC1155 tokenContractAddress,
         uint256 tokenId
@@ -134,7 +146,10 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         );
         _;
     }
-
+    // function - depositAsset
+    // @param - IERC1155 tokenContractAddress  (the address of the NFT contract to deposit)
+    // @param - uint256 tokenId  (the id of the NFT to deposit)
+    // @param - uint256 amount  (the amount of the NFT to deposit)
     function depositAsset(
         IERC1155 tokenContractAddress,
         uint256 tokenId,
