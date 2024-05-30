@@ -42,6 +42,7 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     event AdminRoleGranted(address indexed account);
     event MinterRoleGranted(address indexed account);
     event AssetDeposited(address indexed account, IERC1155 indexed asset, uint256 id, uint256 amount);
+    event AssetWithdrawn(address indexed account, IERC1155 indexed asset, uint256 id, uint256 amount);
 
     // Define the constructor
     // @param _baseToken - the token of the contract deployer, may require to use contract
@@ -107,7 +108,7 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     ) public onlyAdmin {
         require(
             tokenContractAddress != IERC1155(address(0)),
-            "AssetPool: token contract not supported"
+            "AssetPool: token contract must not be 0"
         );
         require(
             tokenIds[address(tokenContractAddress)][tokenId] == false,
@@ -146,6 +147,17 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         );
         _;
     }
+    modifier validToken(IERC1155 tokenContractAddress, uint256 tokenId) {
+        require(
+            tokenContracts[tokenContractAddress] == true,
+            "AssetPool: token contract not supported"
+        );
+        require(
+            tokenIds[address(tokenContractAddress)][tokenId] == true,
+            "AssetPool: token id not supported"
+        );
+        _;
+    }
     // function - depositAsset
     // @param - IERC1155 tokenContractAddress  (the address of the NFT contract to deposit)
     // @param - uint256 tokenId  (the id of the NFT to deposit)
@@ -154,19 +166,8 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         IERC1155 tokenContractAddress,
         uint256 tokenId,
         uint256 amount
-    ) public {
-        require(
-            tokenContracts[tokenContractAddress] == true,
-            "AssetPool: token contract not supported"
-        );
-        require(
-            tokenContractAddress != IERC1155(address(0)),
-            "AssetPool: token contract not supported"
-        );
-        require(
-            tokenIds[address(tokenContractAddress)][tokenId] == true,
-            "AssetPool: token id not supported"
-        );
+    ) public validToken(tokenContractAddress, tokenId) {
+
         nftBalances[tokenContractAddress][tokenId] += amount;
         assetPoolNFT.safeTransferFrom(
             msg.sender,
@@ -175,9 +176,33 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
             amount,
             ""
         );
+        
         // @dev - emit event
         emit AssetDeposited(msg.sender, assetPoolNFT, tokenId, amount);
 
+    }
+    // function - withdrawAsset
+    // @param - IERC1155 tokenContractAddress  (the address of the NFT contract to withdraw)
+    // @param - uint256 tokenId  (the id of the NFT to withdraw)
+    // @param - uint256 amount  (the amount of the NFT to withdraw)
+    function withdrawAsset(
+        IERC1155 tokenContractAddress,
+        uint256 tokenId,
+        uint256 amount
+    ) public validToken(tokenContractAddress, tokenId) {
+        require(
+            nftBalances[tokenContractAddress][tokenId] >= amount,
+            "AssetPool: insufficient balance"
+        );
+        nftBalances[tokenContractAddress][tokenId] -= amount;
+        assetPoolNFT.safeTransferFrom(
+            address(this),
+            msg.sender,
+            tokenId,
+            amount,
+            ""
+        );
+        emit AssetWithdrawn(msg.sender, assetPoolNFT, tokenId, amount);
     }
 
 //
