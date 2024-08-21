@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "./IOracle.sol";
+import "./interface/IOracle.sol";
 import "forge-std/console.sol";
 
 // AssetPool is a contract that holds a pool of NFT assets, and mints ERC20 tokens against them.
