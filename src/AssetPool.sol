@@ -192,7 +192,7 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
     ) public validToken(tokenContractAddress, tokenId) {
         // continuity balance check to prevent reentrancy attacks
         uint256 balance = tokenContractAddress.balanceOf(
-            address(tokenContractAddress),
+            address(this),
             tokenId
         ) - amount;
         require(
@@ -209,7 +209,7 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         );
         // this check prevents reentrancy attacks
         require(balance == tokenContractAddress.balanceOf(
-            address(tokenContractAddress),
+            address(this),
             tokenId
         ), "AssetPool: balance mismatch");
         emit AssetWithdrawn(msg.sender, assetPoolNFT, tokenId, amount);
