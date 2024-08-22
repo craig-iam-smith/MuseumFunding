@@ -190,6 +190,11 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
         uint256 tokenId,
         uint256 amount
     ) public validToken(tokenContractAddress, tokenId) {
+        // continuity balance check to prevent reentrancy attacks
+        uint256 balance = tokenContractAddress.balanceOf(
+            address(tokenContractAddress),
+            tokenId
+        ) - amount;
         require(
             nftBalances[tokenContractAddress][tokenId] >= amount,
             "AssetPool: insufficient balance"
@@ -202,6 +207,11 @@ contract AssetPool is AccessControl, IERC20, IERC1155, ERC1155Holder {
             amount,
             ""
         );
+        // this check prevents reentrancy attacks
+        require(balance == tokenContractAddress.balanceOf(
+            address(tokenContractAddress),
+            tokenId
+        ), "AssetPool: balance mismatch");
         emit AssetWithdrawn(msg.sender, assetPoolNFT, tokenId, amount);
     }
 
