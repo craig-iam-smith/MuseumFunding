@@ -13,6 +13,10 @@ Let’s make a way for the best museums to keep their cars and the doors of the 
 5. These NFTs would represent ownership or rights to the cars, which could be used as collateral for loans, used for all things DeFi.
 6. other ideas. sell collectible NFTs for iconic cars, owning one of these NFTs will provide the holder with special perks (test drive, track day...)
 
+## Implementation notes:
+ERC-1155 will be used to fractionalize the assets
+In order to make a liquid token for DeFi, make a pool to hold ERC-1155 tokens and issue ERC-20 tokens backed by the pool
+
 # incorporate the following into the outline
 Fractionalize the cars (NFTs that tokenize the ownership) - 	Collectors can collect the classic cars of their dreams, the museum may sell fractions at a discount to the actual value of the asset, and automatically stake/invest/loan the value used to purchase the NFT to provide a long term revenue stream.  The holder of the NFT would have unlimited visits to the car museum, so they can see their baby.
 The museum can sell fractions and keep the car in safekeeping, with proof of ownership by having it on display.  NFT holders themselves or curators could check in (QR code with pic of car) to provide proof of asset on location.
