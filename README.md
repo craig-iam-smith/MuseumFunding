@@ -15,6 +15,10 @@ Let’s make a way for the best museums to keep their cars and the doors of the 
 
 ## Implementation notes:
 ERC-1155 will be used to fractionalize the assets
+ERC-721 will be the collectible provided with each purchase of the asset
+1. Different rarities will be minted based on purchase amount
+2. The ERC-721 may be able to be used at the museum location for special treatment
+
 In order to make a liquid token for DeFi, make a pool to hold ERC-1155 tokens and issue ERC-20 tokens backed by the pool
 
 # incorporate the following into the outline
