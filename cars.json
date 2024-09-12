@@ -1,0 +1,128 @@
+[
+    {
+        "name": "1932 Bucciali TAV-12 Golden Arrow",
+        "description": "A rare and luxurious French automobile.",
+        "attributes": [
+            {
+                "trait_type": "Year",
+                "value": 1932
+            },
+            {
+                "trait_type": "Make",
+                "value": "Bucciali"
+            },
+            {
+                "trait_type": "Model",
+                "value": "TAV-12 Golden Arrow"
+            },
+            {
+                "trait_type": "Color",
+                "value": "Yellow"
+            },
+            {
+                "trait_type": "Condition",
+                "value": "Restored"
+            },
+            {
+                "trait_type": "Rarity",
+                "value": "Extreme Rare"
+            },
+            {
+                "trait_type": "Location",
+                "value": "Clive Cussler's Collection"
+            },
+            {
+                "trait_type": "Price",
+                "value": "1000000"
+            },
+            {
+                "trait_type": "Photo",
+                "value": ""
+            }
+        ]
+    },
+    {
+        "name": "1963 Studebaker Avanti",
+        "description": "An iconic American sports coupe.",
+        "attributes": [
+            {
+                "trait_type": "Year",
+                "value": 1963
+            },
+            {
+                "trait_type": "Make",
+                "value": "Studebaker"
+            },
+            {
+                "trait_type": "Model",
+                "value": "Avanti"
+            },
+            {
+                "trait_type": "Color",
+                "value": "Mother of Pearl"
+            },
+            {
+                "trait_type": "Condition",
+                "value": "Restored"
+            },
+            {
+                "trait_type": "Rarity",
+                "value": "Extreme Rare"
+            },
+            {
+                "trait_type": "Location",
+                "value": "Clive Cussler's Collection"
+            },
+            {
+                "trait_type": "Price",
+                "value": "106700"
+            },
+            {
+                "trait_type": "Photo",
+                "value": "https://i.ibb.co/C8dZz1D/1963-Studebaker-Avanti.jpg"
+            }
+        ]
+    },
+    {
+        "name": "1956 Ford Sunliner Convertible",
+        "description": "A classic American convertible from the 1950s.",
+        "attributes": [
+            {
+                "trait_type": "Year",
+                "value": 1956
+            },
+            {
+                "trait_type": "Make",
+                "value": "Ford"
+            },
+            {
+                "trait_type": "Model",
+                "value": "Sunliner Convertible"
+            },
+            {
+                "trait_type": "Color",
+                "value": "Orange and Pearl White"
+            },
+            {
+                "trait_type": "Condition",
+                "value": "Restored"
+            },
+            {
+                "trait_type": "Rarity",
+                "value": "Very Rare"
+            },
+            {
+                "trait_type": "Location",
+                "value": "Clive Cussler's Collection"
+            },
+            {
+                "trait_type": "Price",
+                "value": "76998"
+            },
+            {
+                "trait_type": "Photo",
+                "value": "https://i.ibb.co/C8dZz1D/1956-Ford-Sunliner-Convertible.jpg"
+            }
+        ]
+    }
+]
