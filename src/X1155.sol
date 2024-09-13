@@ -16,10 +16,10 @@ import "./extensions/X1155Extensions.sol";
 /// @dev - X1155 keeps track of token status (active, inactive, etc)
 /// @dev - X1155 keeps track of transfer fee and fee recipient
 
-abstract contract X1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155URIStorage {
+contract X1155 is ERC1155, Ownable, ERC1155Burnable, ERC1155URIStorage {
   X1155Extensions public xExtensions;
   uint256 public maxPayout = 1000000;
-  constructor(address _xExtensionsAddr) ERC1155("") {
+  constructor(address _xExtensionsAddr) ERC1155("") Ownable(msg.sender) {
     xExtensions = X1155Extensions(_xExtensionsAddr);
     xExtensions.setMinter(msg.sender, true);
   }

@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "../../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 /**
  * @title Pauseable Token Id
  * @dev Allows accounts to be paused by a "pauser" role
  */
-abstract contract PauseableID is Ownable {
+contract PauseableID {
     address private pauser;
     mapping(uint256 => bool) private paused;
 
@@ -52,7 +51,7 @@ abstract contract PauseableID is Ownable {
      * @dev Changes the pauser role
      * @param _newPauser The address of the new pauser
      */
-    function changePauser(address _newPauser) external onlyOwner {
+    function changePauser(address _newPauser) external {
         require(
             _newPauser != address(0),
             "Pauser can not be zero address"

@@ -3,9 +3,10 @@ pragma solidity ^0.8.19;
 
 import "./Blacklistable.sol";
 import "./PausableID.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "../interface/IX1155.sol";
 
- abstract contract X1155Extensions  is Blacklistable, PauseableID{
+contract X1155Extensions is Ownable, Blacklistable, PauseableID {
     event FeeAddressSet(address indexed _feeAddress); 
     event TransferFeeSet(uint256 indexed _transferFee);
     /// @notice Mapping from owner to array of token IDs owned
@@ -35,6 +36,9 @@ import "../interface/IX1155.sol";
         return TransferFee;        
     }
 
+    constructor() Ownable(msg.sender) {
+        // No need to call Blacklistable or PauseableID constructors
+    }
     /**
      * @return the fee address
      */

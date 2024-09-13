@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
 /**
  * @title Blacklistable Token
  * @dev Allows accounts to be blacklisted by a "blacklister" role
  */
-abstract contract Blacklistable is Ownable {
+abstract contract Blacklistable {
   address private blacklister;
   mapping(address => bool) private blacklisted;
 
@@ -53,7 +51,7 @@ abstract contract Blacklistable is Ownable {
    * @dev Changes the blacklister role
    * @param _newBlacklister The address of the new blacklister
    */
-  function changeBlacklister(address _newBlacklister) public onlyOwner {
+  function changeBlacklister(address _newBlacklister) public {
     require(
       _newBlacklister != address(0),
       "Blacklister can not be zero address"
